@@ -16,12 +16,22 @@ if uri == "":
 
 uri = "https://sncb-opendata.hafas.de/gtfs/realtime/" + uri
 
-print(uri)
-quit()
-
 feed = gtfs_realtime_pb2.FeedMessage()
-response = requests.get("URL OF YOUR GTFS-REALTIME SOURCE GOES HERE")
-feed.ParseFromString(response.content)
-for entity in feed.entity:
-    if entity.HasField("trip_update"):
-        print(entity.trip_update)
+
+try:
+    response = requests.get(uri)
+    response.raise_for_status()
+    feed.ParseFromString(response.content)
+    for entity in feed.entity:
+        print("\n--- Feed Entity ---")
+        print(f"ID: {entity.id}")
+        if entity.HasField("trip_update"):
+            print("Trip Update:", entity.trip_update)
+        elif entity.HasField("vehicle"):
+            print("Vehicle Position:", entity.vehicle)
+        elif entity.HasField("alert"):
+            print("Alert:", entity.alert)
+
+except Exception as e:
+    print(f"Error parsing GTFS Realtime data: {e}")
+    quit()
