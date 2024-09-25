@@ -18,3 +18,11 @@ if uri == "":
     quit()
 
 uri = "https://sncb-opendata.hafas.de/gtfs/static/" + uri
+
+response = requests.get(uri)
+if response.status_code != 200:
+    print("Error downloading GTFS data")
+    quit()
+
+with zipfile.ZipFile(BytesIO(response.content)) as thezip:
+    thezip.extractall("gtfs_data")
