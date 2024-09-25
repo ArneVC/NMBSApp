@@ -24,5 +24,6 @@ if response.status_code != 200:
     print("Error downloading GTFS data")
     quit()
 
+# TODO: make sure folder is cleared
 with zipfile.ZipFile(BytesIO(response.content)) as thezip:
     thezip.extractall("gtfs_data")
