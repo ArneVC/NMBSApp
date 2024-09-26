@@ -30,3 +30,8 @@ if os.path.exists(dirpath) and os.path.isdir(dirpath):
     shutil.rmtree(dirpath)
 with zipfile.ZipFile(BytesIO(response.content)) as thezip:
     thezip.extractall("gtfs_data")
+
+stops = pd.read_csv("gtfs_data/stops.txt")
+stop_times = pd.read_csv("gtfs_data/stop_times.txt")
+trips = pd.read_csv("gtfs_data/trips.txt")
+routes = pd.read_csv("gtfs_data/routes.txt")
