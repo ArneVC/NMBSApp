@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import zipfile
 import os
+import shutil
 from io import BytesIO
 
 uri = ""
@@ -24,6 +25,8 @@ if response.status_code != 200:
     print("Error downloading GTFS data")
     quit()
 
-# TODO: make sure folder is cleared
+dirpath = "gtfs_data"
+if os.path.exists(dirpath) and os.path.isdir(dirpath):
+    shutil.rmtree(dirpath)
 with zipfile.ZipFile(BytesIO(response.content)) as thezip:
     thezip.extractall("gtfs_data")
